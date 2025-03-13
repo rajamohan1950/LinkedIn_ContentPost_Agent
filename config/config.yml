@@ -1,0 +1,233 @@
+# LinkedIn Deep Learning Thought Leadership Agent Configuration
+
+# General settings
+general:
+  environment: development  # development, staging, production
+  debug: true
+  log_level: INFO
+
+# Data collection settings
+data_collection:
+  sources:
+    arxiv:
+      enabled: true
+      categories:
+        - cs.AI
+        - cs.LG
+        - cs.CL
+        - cs.CV
+      max_results: 100
+      days_back: 30
+    
+    technical_blogs:
+      enabled: true
+      sources:
+        - name: Google AI Blog
+          url: https://ai.googleblog.com/
+        - name: OpenAI Blog
+          url: https://openai.com/blog/
+        - name: Meta AI Blog
+          url: https://ai.facebook.com/blog/
+        - name: Microsoft Research
+          url: https://www.microsoft.com/en-us/research/blog/
+      max_posts_per_source: 10
+    
+    social_media:
+      enabled: true
+      platforms:
+        twitter:
+          enabled: true
+          hashtags:
+            - DeepLearning
+            - MachineLearning
+            - AI
+            - NeuralNetworks
+          accounts:
+            - AndrewYNg
+            - ylecun
+            - karpathy
+            - _airesearch
+          max_tweets: 100
+    
+    industry_reports:
+      enabled: true
+      sources:
+        - name: Gartner
+          url: https://www.gartner.com/en/research/topics/artificial-intelligence
+        - name: McKinsey
+          url: https://www.mckinsey.com/capabilities/quantumblack/our-insights
+      max_reports: 5
+
+  update_frequency:
+    arxiv: 24  # hours
+    technical_blogs: 12  # hours
+    social_media: 6  # hours
+    industry_reports: 168  # hours (weekly)
+
+# Content analysis settings
+content_analysis:
+  nlp:
+    model: huggingface/bert-base-uncased
+    max_length: 512
+  
+  topic_modeling:
+    method: bertopic  # bertopic, lda
+    num_topics: 20
+  
+  sentiment_analysis:
+    enabled: true
+    model: distilbert-base-uncased-finetuned-sst-2-english
+  
+  citation_analysis:
+    enabled: true
+    min_citations: 5
+
+# Content generation settings
+content_generation:
+  llm:
+    provider: openai  # openai, anthropic, huggingface
+    model: gpt-4  # gpt-4, claude-2, llama-2-70b
+    temperature: 0.7
+    max_tokens: 1000
+  
+  templates:
+    directory: templates/
+    default: standard_post.j2
+  
+  content_types:
+    technical_analysis:
+      enabled: true
+      frequency: 0.3  # 30% of posts
+      min_length: 500
+      max_length: 1500
+    
+    industry_insights:
+      enabled: true
+      frequency: 0.3  # 30% of posts
+      min_length: 400
+      max_length: 1200
+    
+    trend_forecasting:
+      enabled: true
+      frequency: 0.2  # 20% of posts
+      min_length: 600
+      max_length: 1800
+    
+    tutorial:
+      enabled: true
+      frequency: 0.2  # 20% of posts
+      min_length: 800
+      max_length: 2000
+  
+  verification:
+    enabled: true
+    fact_check: true
+    technical_accuracy: true
+
+# LinkedIn API settings
+linkedin_api:
+  api_version: v2
+  oauth:
+    client_id: YOUR_CLIENT_ID  # Replace with actual client ID
+    client_secret: YOUR_CLIENT_SECRET  # Replace with actual client secret
+    redirect_uri: http://localhost:8000/callback
+    scopes:
+      - r_liteprofile
+      - r_emailaddress
+      - w_member_social
+  
+  post_settings:
+    visibility: connections-only  # public, connections-only
+    comment_enabled: true
+    include_hashtags: true
+    max_hashtags: 5
+    include_links: true
+
+# Scheduling settings
+scheduling:
+  posting_frequency:
+    posts_per_week: 3
+    min_hours_between_posts: 24
+  
+  optimal_timing:
+    enabled: true
+    learning_rate: 0.1
+    exploration_rate: 0.2
+  
+  time_slots:
+    - day: monday
+      slots:
+        - 09:00
+        - 12:00
+        - 17:00
+    - day: tuesday
+      slots:
+        - 09:00
+        - 12:00
+        - 17:00
+    - day: wednesday
+      slots:
+        - 09:00
+        - 12:00
+        - 17:00
+    - day: thursday
+      slots:
+        - 09:00
+        - 12:00
+        - 17:00
+    - day: friday
+      slots:
+        - 09:00
+        - 12:00
+        - 15:00
+  
+  approval_workflow:
+    enabled: true
+    approval_timeout_hours: 24
+    auto_approve: false
+    notification_email: user@example.com
+
+# Feedback analysis settings
+feedback:
+  metrics:
+    engagement:
+      likes_weight: 1.0
+      comments_weight: 2.0
+      shares_weight: 3.0
+      views_weight: 0.1
+    
+    influence:
+      profile_views_weight: 1.0
+      follower_growth_weight: 2.0
+      mentions_weight: 1.5
+  
+  learning:
+    algorithm: bayesian_optimization
+    update_frequency: 7  # days
+    min_samples: 10
+  
+  a_b_testing:
+    enabled: true
+    test_percentage: 0.2  # 20% of posts are test variants
+    min_test_duration: 7  # days
+    significance_threshold: 0.05
+
+# Database settings
+database:
+  type: mongodb  # mongodb, postgresql
+  connection:
+    host: localhost
+    port: 27017
+    database: linkedin_agent
+    username: user  # Replace with actual username
+    password: password  # Replace with actual password
+  
+  time_series:
+    enabled: true
+    type: influxdb
+    connection:
+      host: localhost
+      port: 8086
+      database: linkedin_metrics
+      username: user  # Replace with actual username
+      password: password  # Replace with actual password 
